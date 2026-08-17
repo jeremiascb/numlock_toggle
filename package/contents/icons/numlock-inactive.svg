@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- Keycap base dimmed -->
+  <rect x="2" y="2" width="28" height="28" rx="6" fill="#232629" stroke="#505559" stroke-width="1.2" />
+
+  <!-- Dialpad / Numeric Matrix Dots (3x3 grid dimmed) -->
+  <circle cx="8" cy="10" r="1.5" fill="#7f8c8d" opacity="0.6" />
+  <circle cx="13" cy="10" r="1.5" fill="#7f8c8d" opacity="0.6" />
+  <circle cx="8" cy="16" r="1.5" fill="#7f8c8d" opacity="0.6" />
+  <circle cx="13" cy="16" r="1.5" fill="#7f8c8d" opacity="0.6" />
+  <circle cx="8" cy="22" r="1.5" fill="#7f8c8d" opacity="0.6" />
+  <circle cx="13" cy="22" r="1.5" fill="#7f8c8d" opacity="0.6" />
+
+  <!-- "1" text dimmed -->
+  <text x="21" y="21" font-family="sans-serif" font-size="12" font-weight="bold" fill="#7f8c8d" text-anchor="middle">1</text>
+
+  <!-- Inactive LED indicator in top right -->
+  <circle cx="25" cy="7" r="2.2" fill="#505559" />
+</svg>

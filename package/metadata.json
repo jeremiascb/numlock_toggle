@@ -1,0 +1,31 @@
+{
+    "KPackageStructure": "Plasma/Applet",
+    "KPlugin": {
+        "Authors": [
+            {
+                "Name": "Jeremias",
+                "Email": "jeremias@local"
+            }
+        ],
+        "Category": "Utilities",
+        "Description": "Monitora e força o Num Lock ativo automaticamente ao bloquear a tela e na inicialização",
+        "Description[en]": "Monitors and forces Num Lock active automatically when screen locks and on startup",
+        "Description[pt_BR]": "Monitora e força o Num Lock ativo automaticamente ao bloquear a tela e na inicialização",
+        "Icon": "input-dialpad",
+        "Id": "org.kde.plasma.numlocktoggle",
+        "License": "GPL-3.0-or-later",
+        "Name": "Num Lock Auto Locker",
+        "Name[en]": "Num Lock Auto Locker",
+        "Name[pt_BR]": "Num Lock Auto Locker",
+        "Version": "1.0.0",
+        "Website": "https://github.com/jeremiascb/numlock_toggle"
+    },
+    "X-Plasma-API": "declarativeappletscript",
+    "X-Plasma-API-Minimum-Version": "6.0",
+    "X-Plasma-MainScript": "ui/main.qml",
+    "X-Plasma-NotificationArea": "true",
+    "X-Plasma-NotificationAreaCategory": "SystemServices",
+    "X-Plasma-Provides": [
+        "org.kde.plasma.lockkeys"
+    ]
+}

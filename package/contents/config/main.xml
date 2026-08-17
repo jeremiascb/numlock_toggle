@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kcfg xmlns="http://www.kde.org/standards/kcfg/1.0"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
+      http://www.kde.org/standards/kcfg/1.0/kcfg.xsd">
+    <kcfgfile name=""/>
+    <group name="General">
+        <entry name="forceNumLockOnLock" type="Bool">
+            <label>Forçar Num Lock ativado ao bloquear a tela</label>
+            <default>true</default>
+        </entry>
+        <entry name="forceNumLockOnStartup" type="Bool">
+            <label>Forçar Num Lock ativado ao iniciar o desktop</label>
+            <default>true</default>
+        </entry>
+        <entry name="showNotification" type="Bool">
+            <label>Exibir notificação ao ativar automaticamente o Num Lock</label>
+            <default>false</default>
+        </entry>
+        <entry name="showCapsLock" type="Bool">
+            <label>Mostrar também o estado de Caps Lock no painel</label>
+            <default>false</default>
+        </entry>
+        <entry name="showScrollLock" type="Bool">
+            <label>Mostrar também o estado de Scroll Lock no painel</label>
+            <default>false</default>
+        </entry>
+        <entry name="checkIntervalMs" type="Int">
+            <label>Intervalo de verificação de status (ms)</label>
+            <default>1000</default>
+        </entry>
+    </group>
+</kcfg>
