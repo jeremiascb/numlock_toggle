@@ -10,7 +10,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(dirname "$SCRIPT_DIR")"
 PACKAGE_DIR="$ROOT_DIR/package"
 BUILD_DIR="$ROOT_DIR/build"
-VERSION="1.0.0"
+VERSION="1.0.1"
 PLUGIN_ID="org.kde.plasma.numlocktoggle"
 
 RED='\033[0;31m'
@@ -40,14 +40,15 @@ TARGZ_FILE="$BUILD_DIR/${PLUGIN_ID}-v${VERSION}.tar.gz"
 # 3. Gerar arquivo .plasmoid (formato zip oficial do Plasma 6)
 echo -e "${BLUE}[*] Gerando pacote .plasmoid...${NC}"
 cd "$PACKAGE_DIR"
-zip -r -9 "$PLASMOID_FILE" . -x "*.git*" "*~" "*.DS_Store"
+zip -r -9 "$PLASMOID_FILE" . \
+    -x "*.git*" "*~" "*.DS_Store" "*.pyc" "*/__pycache__/" "*/__pycache__/*"
 
 # 4. Gerar arquivo .tar.gz (com o diretório raiz org.kde.plasma.numlocktoggle)
 echo -e "${BLUE}[*] Gerando pacote .tar.gz...${NC}"
 TMP_DIR=$(mktemp -d)
 cp -r "$PACKAGE_DIR" "$TMP_DIR/$PLUGIN_ID"
 cd "$TMP_DIR"
-tar -czf "$TARGZ_FILE" "$PLUGIN_ID"
+tar --exclude='*.pyc' --exclude='*/__pycache__' -czf "$TARGZ_FILE" "$PLUGIN_ID"
 rm -rf "$TMP_DIR"
 
 echo -e "\n${BOLD}${GREEN}======================================================${NC}"
