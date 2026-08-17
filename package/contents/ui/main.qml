@@ -64,18 +64,12 @@ PlasmoidItem {
 
     // Force NumLock ON
     function forceNumLockOn() {
-        if (!numLockActive) {
-            toggleNumLock()
-        }
         let notifyFlag = Plasmoid.configuration.showNotification ? " --notify" : ""
         executableSource.runCommand("python3 " + root.helperPath + " --enable" + notifyFlag)
     }
 
     // Force NumLock OFF
     function forceNumLockOff() {
-        if (numLockActive) {
-            toggleNumLock()
-        }
         executableSource.runCommand("python3 " + root.helperPath + " --disable")
     }
 

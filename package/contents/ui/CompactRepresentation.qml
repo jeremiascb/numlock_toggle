@@ -54,7 +54,6 @@ Item {
                     plasmoid.expanded = !plasmoid.expanded
                 }
             } else if (mouse.button === Qt.MiddleButton) {
-                numLockState.lock(!numLockState.locked)
                 if (compactRoot.plasmoidItem) {
                     compactRoot.plasmoidItem.toggleNumLock()
                 }

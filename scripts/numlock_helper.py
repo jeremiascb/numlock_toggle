@@ -178,14 +178,19 @@ def toggle_numlock():
 
 def enable_numlock(notify: bool = False):
     """Enforces NumLock to be ON."""
-    # Ensure kcminputrc is 0 (Turn On)
+    # Read the hardware state before asking KWin to reconfigure. Reconfiguring
+    # first can turn NumLock on asynchronously and a subsequent stale read may
+    # inject a second key press, turning it off again.
+    was_active = get_led_state("numlock")
+    activated = False
+    if not was_active:
+        activated = inject_numlock_key()
+
+    # Persist the desired state after the (possible) key injection. This is
+    # safe when NumLock was already active and makes --enable idempotent.
     sync_kcminputrc_numlock(True)
 
-    # Check if currently off, and toggle
-    if not get_led_state("numlock"):
-        inject_numlock_key()
-
-    if notify:
+    if notify and not was_active:
         try:
             subprocess.run([
                 "notify-send",
@@ -196,13 +201,19 @@ def enable_numlock(notify: bool = False):
             ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=2)
         except Exception:
             pass
-    print("[Helper] NumLock forced ON successfully.")
+    if was_active:
+        print("[Helper] NumLock already ON; no key event was injected.")
+    elif activated:
+        print("[Helper] NumLock forced ON successfully.")
+    else:
+        print("[Helper] NumLock ON requested through KDE configuration.")
 
 def disable_numlock():
     """Enforces NumLock to be OFF."""
-    sync_kcminputrc_numlock(False)
-    if get_led_state("numlock"):
+    was_active = get_led_state("numlock")
+    if was_active:
         inject_numlock_key()
+    sync_kcminputrc_numlock(False)
     print("[Helper] NumLock forced OFF.")
 
 def run_daemon(notify: bool = False):
