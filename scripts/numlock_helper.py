@@ -138,21 +138,63 @@ def inject_numlock_key() -> bool:
 
 def sync_kcminputrc_numlock(enable: bool = True):
     """
-    Ensures ~/.config/kcminputrc has [Keyboard] NumLock=0 (0 = Turn On, 1 = Turn Off)
+    Ensures ~/.config/kcminputrc has [Keyboard] numlock=1 (1 = Turn On, 0 = Turn Off)
     and notifies KWin to reload keyboard configuration.
+
+    KDE Plasma expects the key in lowercase ('numlock') without spaces around '='.
+    Values: 0 = Turn Off, 1 = Turn On, 2 = Leave Unchanged.
+    Using configparser.write() would produce 'NumLock = 0' which KDE does not
+    recognize, causing it to fall back to 'Leave Unchanged' after reboot.
     """
     kcminputrc_path = os.path.expanduser("~/.config/kcminputrc")
+    # KDE Plasma: 1 = Turn On, 0 = Turn Off, 2 = Leave Unchanged
+    target_value = "1" if enable else "0"
     try:
-        config = configparser.ConfigParser(strict=False)
-        config.read(kcminputrc_path)
-        if not config.has_section("Keyboard"):
-            config.add_section("Keyboard")
+        # Read current lines preserving formatting of other sections
+        try:
+            with open(kcminputrc_path, "r") as f:
+                lines = f.readlines()
+        except FileNotFoundError:
+            lines = []
 
-        # In KDE Plasma: 0 = Turn On, 1 = Turn Off, 2 = Leave Unchanged
-        config.set("Keyboard", "NumLock", "0" if enable else "1")
+        in_keyboard_section = False
+        keyboard_section_found = False
+        numlock_key_found = False
+        new_lines = []
+
+        for line in lines:
+            stripped = line.strip()
+            if stripped.startswith("["):
+                if stripped.lower() == "[keyboard]":
+                    in_keyboard_section = True
+                    keyboard_section_found = True
+                else:
+                    in_keyboard_section = False
+                new_lines.append(line)
+            elif in_keyboard_section and stripped.lower().startswith("numlock="):
+                # Replace with the correct lowercase key and value, no spaces
+                new_lines.append(f"numlock={target_value}\n")
+                numlock_key_found = True
+            else:
+                new_lines.append(line)
+
+        if not keyboard_section_found:
+            new_lines.append("[Keyboard]\n")
+            new_lines.append(f"numlock={target_value}\n")
+        elif not numlock_key_found:
+            # Insert numlock right after the [Keyboard] header
+            insert_idx = None
+            for i, line in enumerate(new_lines):
+                if line.strip().lower() == "[keyboard]":
+                    insert_idx = i + 1
+                    break
+            if insert_idx is not None:
+                new_lines.insert(insert_idx, f"numlock={target_value}\n")
 
         with open(kcminputrc_path, "w") as f:
-            config.write(f, space_around_delimiters=False)
+            f.writelines(new_lines)
+
+        print(f"[Helper] kcminputrc updated: numlock={target_value}")
     except Exception as e:
         print(f"[Helper] Error updating kcminputrc: {e}", file=sys.stderr)
 

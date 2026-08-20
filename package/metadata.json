@@ -17,7 +17,7 @@
         "Name": "Num Lock Auto Locker",
         "Name[en]": "Num Lock Auto Locker",
         "Name[pt_BR]": "Num Lock Auto Locker",
-        "Version": "1.0.1",
+        "Version": "1.0.2",
         "Website": "https://github.com/jeremiascb/numlock_toggle"
     },
     "X-Plasma-API": "declarativeappletscript",
