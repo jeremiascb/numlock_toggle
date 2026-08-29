@@ -1,5 +1,6 @@
 import importlib.util
 import pathlib
+import tempfile
 import unittest
 from unittest import mock
 
@@ -31,6 +32,53 @@ class EnableNumLockTests(unittest.TestCase):
         inject.assert_called_once_with()
         sync.assert_called_once_with(True)
 
+
+class KcminputrcTests(unittest.TestCase):
+    def setUp(self):
+        self.temp_dir = tempfile.TemporaryDirectory()
+        self.config_path = pathlib.Path(self.temp_dir.name) / "kcminputrc"
+        self.expanduser = mock.patch.object(
+            helper.os.path, "expanduser", return_value=str(self.config_path)
+        )
+        self.expanduser.start()
+        self.qdbus = mock.patch.object(helper.subprocess, "run")
+        self.qdbus.start()
+
+    def tearDown(self):
+        self.qdbus.stop()
+        self.expanduser.stop()
+        self.temp_dir.cleanup()
+
+    def test_enable_writes_kde_key_and_value(self):
+        self.config_path.write_text("[Keyboard]\nNumLock=2\n", encoding="utf-8")
+
+        helper.sync_kcminputrc_numlock(True)
+
+        self.assertEqual(
+            self.config_path.read_text(encoding="utf-8"),
+            "[Keyboard]\nNumLock=0\n",
+        )
+
+    def test_disable_writes_kde_key_and_value(self):
+        helper.sync_kcminputrc_numlock(False)
+
+        self.assertEqual(
+            self.config_path.read_text(encoding="utf-8"),
+            "[Keyboard]\nNumLock=1\n",
+        )
+
+    def test_replaces_legacy_spacing_and_preserves_other_sections(self):
+        self.config_path.write_text(
+            "[Keyboard]\nNumLock = 1\n\n[Mouse]\ncursorTheme=breeze\n",
+            encoding="utf-8",
+        )
+
+        helper.sync_kcminputrc_numlock(True)
+
+        self.assertEqual(
+            self.config_path.read_text(encoding="utf-8"),
+            "[Keyboard]\nNumLock=0\n\n[Mouse]\ncursorTheme=breeze\n",
+        )
 
 if __name__ == "__main__":
     unittest.main()

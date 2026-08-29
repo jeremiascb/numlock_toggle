@@ -7,20 +7,25 @@ com versionamento seguindo [Semantic Versioning](https://semver.org/lang/pt-BR/)
 
 ---
 
+## [1.0.3] - 2026-08-29
+
+### Corrigido
+- **Configuração do KDE permanecia em "Manter inalterado"**: o Plasma lê a
+  chave `NumLock` com capitalização exata e usa `0` para ativar e `1` para
+  desativar. A versão anterior gravava `numlock=1`, que era ignorado pelo KCM.
+- O helper agora também migra automaticamente arquivos antigos com espaços ao
+  redor do `=` para o formato aceito pelo KDE.
+
+### Alterado
+- `scripts/numlock_helper.py` e a cópia empacotada corrigidos.
+- Testes adicionados para os valores e o formato do `kcminputrc`.
+
+---
+
 ## [1.0.2] - 2026-08-20
 
 ### Corrigido
-- **NumLock revertia para "Manter inalterado" após reinicialização**: a função
-  `sync_kcminputrc_numlock` usava `configparser.write()` do Python, que gerava
-  o arquivo `~/.config/kcminputrc` com a chave `NumLock = 0` (maiúscula e com
-  espaços ao redor do `=`). O KDE Plasma não reconhece esse formato e ignorava
-  a configuração, revertendo para o padrão "Manter inalterado" a cada boot.
-- **Formato da chave corrigido**: a chave agora é escrita como `numlock=1`
-  (minúscula, sem espaços), exatamente como o KDE espera.
-- **Valores corrigidos**: os valores estavam invertidos na lógica interna do
-  script (`0=ligar / 1=desligar`). Agora seguem a convenção correta do KDE
-  Plasma (`0=desligar / 1=ligar / 2=manter inalterado`).
-- **Preservação do arquivo**: a reescrita agora é feita linha a linha,
+- **Preservação do arquivo**: a reescrita passou a ser feita linha a linha,
   preservando o formato e as demais seções do `kcminputrc` (ex.: configurações
   de touchpad, libinput), sem reprocessar o arquivo inteiro via configparser.
 
