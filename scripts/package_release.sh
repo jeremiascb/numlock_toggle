@@ -24,6 +24,7 @@ echo -e "${BOLD}${BLUE}=== Empacotador para KDE Store: Num Lock Auto Locker ===$
 # 1. Sincronizar scripts dentro de package/contents/scripts
 mkdir -p "$PACKAGE_DIR/contents/scripts"
 cp -f "$ROOT_DIR/scripts/numlock_helper.py" "$PACKAGE_DIR/contents/scripts/"
+cp -f "$ROOT_DIR/scripts/numlock_i18n.sh" "$PACKAGE_DIR/contents/scripts/"
 cp -f "$ROOT_DIR/scripts/sync_sddm.sh" "$PACKAGE_DIR/contents/scripts/"
 cp -f "$ROOT_DIR/scripts/numlock-autolock.service" "$PACKAGE_DIR/contents/scripts/"
 cp -f "$ROOT_DIR/scripts/install.sh" "$PACKAGE_DIR/contents/scripts/"

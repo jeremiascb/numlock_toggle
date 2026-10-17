@@ -14,6 +14,7 @@ Item {
     id: compactRoot
 
     property PlasmoidItem plasmoidItem: null
+    property string language: "en"
 
     // Direct real-time KeyState listener
     KeyboardIndicator.KeyState {
@@ -65,11 +66,11 @@ Item {
     QQC2.ToolTip.visible: mouseArea.containsMouse
     QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
     QQC2.ToolTip.text: {
-        let txt = Translations.tr(Plasmoid.configuration.language, "Num Lock: %1", compactRoot.numLockOn ? Translations.tr(Plasmoid.configuration.language, "ATIVADO") : Translations.tr(Plasmoid.configuration.language, "DESATIVADO"))
+        let txt = Translations.tr(compactRoot.language, "Num Lock: %1", compactRoot.numLockOn ? Translations.tr(compactRoot.language, "ATIVADO") : Translations.tr(compactRoot.language, "DESATIVADO"))
         if (Plasmoid.configuration.showCapsLock) {
-            txt += "\n" + Translations.tr(Plasmoid.configuration.language, "Caps Lock: %1", compactRoot.capsLockOn ? Translations.tr(Plasmoid.configuration.language, "ATIVADO") : Translations.tr(Plasmoid.configuration.language, "DESATIVADO"))
+            txt += "\n" + Translations.tr(compactRoot.language, "Caps Lock: %1", compactRoot.capsLockOn ? Translations.tr(compactRoot.language, "ATIVADO") : Translations.tr(compactRoot.language, "DESATIVADO"))
         }
-        txt += "\n" + Translations.tr(Plasmoid.configuration.language, "(Clique esquerdo: Menu | Clique do meio: Alternar)")
+        txt += "\n" + Translations.tr(compactRoot.language, "(Clique esquerdo: Menu | Clique do meio: Alternar)")
         return txt
     }
 

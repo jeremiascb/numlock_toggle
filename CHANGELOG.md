@@ -7,6 +7,26 @@ com versionamento seguindo [Semantic Versioning](https://semver.org/lang/pt-BR/)
 
 ---
 
+## [Não lançado]
+
+### Corrigido
+- Idioma da interface transmitido explicitamente da raiz do widget às
+  representações do painel e do popup, com seletor persistente nas configurações.
+- Assistente do SDDM agora recebe o idioma escolhido no widget; as mensagens
+  de instalação, desinstalação e sincronização do SDDM foram traduzidas para
+  os quatro idiomas, com English como padrão e suporte a `--language`.
+- Idioma preservado ao executar o script do SDDM com `sudo`.
+- Botão de configurações atualizado para a ação interna do Plasma 6.
+- Botão do SDDM nas configurações executa o assistente diretamente, sem depender
+  de `plasmoid.rootItem`.
+- Caminhos dos scripts protegidos ao montar o comando do assistente no terminal.
+
+### Adicionado
+- Testes de troca e aplicação do idioma em QML, de saída dos scripts nos quatro
+  idiomas e de passagem de argumentos ao assistente do SDDM.
+
+---
+
 ## [1.0.4] - 2026-10-17
 
 ### Adicionado

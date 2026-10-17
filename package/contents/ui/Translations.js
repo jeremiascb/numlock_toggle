@@ -164,3 +164,16 @@ function tr(language, source, argument) {
     var text = catalog[source] || messages.en[source] || source
     return argument === undefined ? text : text.replace(/%1/g, function() { return String(argument) })
 }
+
+// Quote each shell argument, including paths containing spaces or apostrophes.
+function shellQuote(value) {
+    return "'" + String(value).replace(/'/g, "'\"'\"'") + "'"
+}
+
+function sddmCommand(scriptPath, language) {
+    var command = "pkexec bash " + shellQuote(scriptPath)
+        + " --language " + shellQuote(normalizeLanguage(language))
+        + "; printf '\\n%s\\n' " + shellQuote(tr(language, "Pressione Enter para fechar..."))
+        + "; read -r"
+    return "konsole -e bash -c " + shellQuote(command)
+}

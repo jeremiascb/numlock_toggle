@@ -14,6 +14,8 @@ import org.kde.plasma.private.keyboardindicator as KeyboardIndicator
 PlasmoidItem {
     id: root
 
+    readonly property string language: Translations.normalizeLanguage(Plasmoid.configuration.language)
+
     readonly property bool inPanel: [
         PlasmaCore.Types.TopEdge,
         PlasmaCore.Types.RightEdge,
@@ -37,10 +39,12 @@ PlasmoidItem {
 
     compactRepresentation: CompactRepresentation {
         plasmoidItem: root
+        language: root.language
     }
 
     fullRepresentation: FullRepresentation {
         plasmoidItem: root
+        language: root.language
     }
 
     // Executable Data Engine for external scripts and SDDM sync
@@ -66,7 +70,7 @@ PlasmoidItem {
     // Force NumLock ON
     function forceNumLockOn() {
         let notifyFlag = Plasmoid.configuration.showNotification ? " --notify" : ""
-        executableSource.runCommand("python3 " + root.helperPath + " --enable --language " + Translations.normalizeLanguage(Plasmoid.configuration.language) + notifyFlag)
+        executableSource.runCommand("python3 " + root.helperPath + " --enable --language " + root.language + notifyFlag)
     }
 
     // Force NumLock OFF
@@ -76,7 +80,7 @@ PlasmoidItem {
 
     // Trigger SDDM Sync in terminal / GUI
     function runSddmSync() {
-        executableSource.runCommand("konsole -e bash -c 'pkexec " + root.sddmScriptPath + " ; echo \"" + Translations.tr(Plasmoid.configuration.language, "Pressione Enter para fechar...") + "\"; read'")
+        executableSource.runCommand(Translations.sddmCommand(root.sddmScriptPath, root.language))
     }
 
     // Startup check

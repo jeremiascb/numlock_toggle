@@ -35,6 +35,7 @@ numlock_toggle/
 │       └── ui/                  # Componentes de interface QML
 │           ├── CompactRepresentation.qml
 │           ├── FullRepresentation.qml
+│           ├── LanguageSelector.qml # Seletor de idioma persistente
 │           ├── Translations.js   # Textos nos quatro idiomas
 │           ├── configGeneral.qml
 │           └── main.qml
@@ -43,6 +44,7 @@ numlock_toggle/
 │   ├── uninstall.sh             # Script de desinstalação
 │   ├── sync_sddm.sh             # Script de configuração do SDDM (root)
 │   ├── numlock_helper.py        # Utilitário CLI e daemon DBus
+│   ├── numlock_i18n.sh          # Traduções dos scripts de instalação e SDDM
 │   ├── numlock-autolock.service # Serviço de usuário do systemd
 │   └── package_release.sh      # Geração dos pacotes de distribuição
 └── README.md
@@ -78,7 +80,22 @@ A escolha é salva por instância do widget e aplicada ao painel, às dicas, à
 página de configurações e às notificações de ativação iniciadas pelo widget.
 O serviço em segundo plano é independente: para escolher o idioma das suas
 notificações ao executá-lo manualmente, use `--notify --language`.
-Os scripts de instalação e sincronização do SDDM continuam em português.
+O assistente do SDDM aberto pelo widget recebe o idioma escolhido. Os scripts
+de instalação, desinstalação e SDDM também aceitam `--language`, com English
+como padrão:
+
+```bash
+bash scripts/install.sh --language pt_BR
+bash scripts/sync_sddm.sh --language en
+bash scripts/uninstall.sh --language es
+```
+
+Os códigos aceitos são `en`, `pt_PT`, `pt_BR` e `es`. O instalador encaminha
+o idioma ao script do SDDM, inclusive ao executar com `sudo`.
+
+Depois de atualizar um widget já carregado, remova-o do painel e adicione-o
+novamente para carregar os novos arquivos QML. Escolha o idioma e clique em
+**Aplicar**.
 
 ---
 
@@ -145,6 +162,19 @@ kpackagetool6 -t Plasma/Applet --install build/org.kde.plasma.numlocktoggle-v1.0
 Se o widget já estiver instalado, use `--upgrade` no lugar de `--install`.
 Para instalar também o serviço de monitoramento, siga a instalação completa
 com `bash scripts/install.sh` descrita acima.
+
+---
+
+## 🧪 Validação
+
+```bash
+python3 -m unittest discover -s tests -v
+node tests/test_translations.js
+```
+
+Os testes de QML usam PySide6; sem essa dependência, são ignorados. Os testes
+dos scripts executam a configuração do SDDM em diretórios temporários, com
+os comandos administrativos substituídos, sem alterar o sistema.
 
 ---
 

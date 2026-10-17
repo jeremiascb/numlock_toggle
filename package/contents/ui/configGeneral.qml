@@ -1,15 +1,15 @@
 import QtQuick
 import "Translations.js" as Translations
-import QtQuick.Controls as QQC2
 import QtQuick.Layouts
 import org.kde.kirigami as Kirigami
 import org.kde.kcmutils as KCM
+import org.kde.plasma.plasma5support as Plasma5Support
 import org.kde.plasma.components as PlasmaComponents3
 
 KCM.SimpleKCM {
     id: configPage
 
-    property string cfg_language: "en"
+    property alias cfg_language: languageComboBox.language
 
     property alias cfg_forceNumLockOnLock: forceOnLockCheckBox.checked
     property alias cfg_forceNumLockOnStartup: forceOnStartupCheckBox.checked
@@ -17,15 +17,20 @@ KCM.SimpleKCM {
     property alias cfg_showCapsLock: showCapsCheckBox.checked
     property alias cfg_showScrollLock: showScrollCheckBox.checked
 
+    Plasma5Support.DataSource {
+        id: executableSource
+        engine: "executable"
+        connectedSources: []
+        onNewData: (sourceName, data) => disconnectSource(sourceName)
+    }
+
     Kirigami.FormLayout {
         anchors.fill: parent
 
-        QQC2.ComboBox {
+        LanguageSelector {
             id: languageComboBox
+            objectName: "languageComboBox"
             Kirigami.FormData.label: Translations.tr(configPage.cfg_language, "Idioma:")
-            model: Translations.languageNames
-            currentIndex: Translations.languageCodes.indexOf(Translations.normalizeLanguage(configPage.cfg_language))
-            onActivated: configPage.cfg_language = Translations.languageCodes[currentIndex]
         }
 
         Item {
@@ -83,9 +88,8 @@ KCM.SimpleKCM {
             text: Translations.tr(configPage.cfg_language, "Configurar SDDM Agora (requer sudo)")
             icon.name: "preferences-system-login"
             onClicked: {
-                if (plasmoid.rootItem) {
-                    plasmoid.rootItem.runSddmSync()
-                }
+                const scriptPath = Qt.resolvedUrl("../scripts/sync_sddm.sh").toString().replace(/^file:\/\//, "")
+                executableSource.connectSource(Translations.sddmCommand(scriptPath, configPage.cfg_language))
             }
         }
     }

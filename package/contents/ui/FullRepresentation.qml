@@ -14,6 +14,7 @@ PlasmaExtras.Representation {
     id: fullRoot
 
     property PlasmoidItem plasmoidItem: null
+    property string language: "en"
 
     // Direct real-time KeyState listener
     KeyboardIndicator.KeyState {
@@ -53,7 +54,7 @@ PlasmaExtras.Representation {
             }
 
             PlasmaComponents3.Label {
-                text: Translations.tr(Plasmoid.configuration.language, "Num Lock Auto Locker")
+                text: Translations.tr(fullRoot.language, "Num Lock Auto Locker")
                 font.bold: true
                 Layout.fillWidth: true
                 elide: Text.ElideRight
@@ -61,9 +62,9 @@ PlasmaExtras.Representation {
 
             PlasmaComponents3.ToolButton {
                 icon.name: "configure"
-                text: Translations.tr(Plasmoid.configuration.language, "Configurações")
+                text: Translations.tr(fullRoot.language, "Configurações")
                 display: PlasmaComponents3.AbstractButton.IconOnly
-                onClicked: plasmoid.action("configure").trigger()
+                onClicked: Plasmoid.internalAction("configure").trigger()
             }
         }
     }
@@ -92,14 +93,14 @@ PlasmaExtras.Representation {
                     spacing: Kirigami.Units.smallSpacing * 0.4
 
                     PlasmaComponents3.Label {
-                        text: Translations.tr(Plasmoid.configuration.language, "Teclado Numérico (Num Lock)")
+                        text: Translations.tr(fullRoot.language, "Teclado Numérico (Num Lock)")
                         font.bold: true
                         font.pixelSize: Kirigami.Units.gridUnit * 0.82
                         Layout.fillWidth: true
                     }
 
                     PlasmaComponents3.Label {
-                        text: fullRoot.numLockOn ? Translations.tr(Plasmoid.configuration.language, "Ativado e pronto para uso") : Translations.tr(Plasmoid.configuration.language, "Desativado")
+                        text: fullRoot.numLockOn ? Translations.tr(fullRoot.language, "Ativado e pronto para uso") : Translations.tr(fullRoot.language, "Desativado")
                         color: fullRoot.numLockOn ? Kirigami.Theme.positiveTextColor : Kirigami.Theme.disabledTextColor
                         font.pixelSize: Kirigami.Units.gridUnit * 0.72
                         Layout.fillWidth: true
@@ -137,12 +138,12 @@ PlasmaExtras.Representation {
                         color: fullRoot.capsLockOn ? Kirigami.Theme.highlightColor : Kirigami.Theme.disabledTextColor
                     }
                     PlasmaComponents3.Label {
-                        text: Translations.tr(Plasmoid.configuration.language, "Caps Lock (Maiúsculas):")
+                        text: Translations.tr(fullRoot.language, "Caps Lock (Maiúsculas):")
                         font.pixelSize: Kirigami.Units.gridUnit * 0.75
                         Layout.fillWidth: true
                     }
                     PlasmaComponents3.Label {
-                        text: fullRoot.capsLockOn ? Translations.tr(Plasmoid.configuration.language, "LIGADO") : Translations.tr(Plasmoid.configuration.language, "DESLIGADO")
+                        text: fullRoot.capsLockOn ? Translations.tr(fullRoot.language, "LIGADO") : Translations.tr(fullRoot.language, "DESLIGADO")
                         font.bold: true
                         font.pixelSize: Kirigami.Units.gridUnit * 0.72
                         color: fullRoot.capsLockOn ? Kirigami.Theme.highlightColor : Kirigami.Theme.disabledTextColor
@@ -164,12 +165,12 @@ PlasmaExtras.Representation {
                         color: fullRoot.scrollLockOn ? Kirigami.Theme.highlightColor : Kirigami.Theme.disabledTextColor
                     }
                     PlasmaComponents3.Label {
-                        text: Translations.tr(Plasmoid.configuration.language, "Scroll Lock:")
+                        text: Translations.tr(fullRoot.language, "Scroll Lock:")
                         font.pixelSize: Kirigami.Units.gridUnit * 0.75
                         Layout.fillWidth: true
                     }
                     PlasmaComponents3.Label {
-                        text: fullRoot.scrollLockOn ? Translations.tr(Plasmoid.configuration.language, "LIGADO") : Translations.tr(Plasmoid.configuration.language, "DESLIGADO")
+                        text: fullRoot.scrollLockOn ? Translations.tr(fullRoot.language, "LIGADO") : Translations.tr(fullRoot.language, "DESLIGADO")
                         font.bold: true
                         font.pixelSize: Kirigami.Units.gridUnit * 0.72
                         color: fullRoot.scrollLockOn ? Kirigami.Theme.highlightColor : Kirigami.Theme.disabledTextColor
@@ -196,7 +197,7 @@ PlasmaExtras.Representation {
                         color: Kirigami.Theme.highlightColor
                     }
                     PlasmaComponents3.Label {
-                        text: Translations.tr(Plasmoid.configuration.language, "Automação de Bloqueio")
+                        text: Translations.tr(fullRoot.language, "Automação de Bloqueio")
                         font.bold: true
                         font.pixelSize: Kirigami.Units.gridUnit * 0.8
                         Layout.fillWidth: true
@@ -208,7 +209,7 @@ PlasmaExtras.Representation {
                 }
 
                 PlasmaComponents3.CheckBox {
-                    text: Translations.tr(Plasmoid.configuration.language, "Forçar Num Lock ao bloquear a tela")
+                    text: Translations.tr(fullRoot.language, "Forçar Num Lock ao bloquear a tela")
                     checked: Plasmoid.configuration.forceNumLockOnLock
                     Layout.fillWidth: true
                     onToggled: {
@@ -217,7 +218,7 @@ PlasmaExtras.Representation {
                 }
 
                 PlasmaComponents3.CheckBox {
-                    text: Translations.tr(Plasmoid.configuration.language, "Forçar Num Lock na inicialização da sessão")
+                    text: Translations.tr(fullRoot.language, "Forçar Num Lock na inicialização da sessão")
                     checked: Plasmoid.configuration.forceNumLockOnStartup
                     Layout.fillWidth: true
                     onToggled: {
@@ -229,7 +230,7 @@ PlasmaExtras.Representation {
 
         // Footer Action
         PlasmaComponents3.Button {
-            text: Translations.tr(Plasmoid.configuration.language, "Sincronizar com SDDM (Login)")
+            text: Translations.tr(fullRoot.language, "Sincronizar com SDDM (Login)")
             icon.name: "preferences-system-login"
             Layout.fillWidth: true
             onClicked: {
