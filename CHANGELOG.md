@@ -7,7 +7,7 @@ com versionamento seguindo [Semantic Versioning](https://semver.org/lang/pt-BR/)
 
 ---
 
-## [Não lançado]
+## [1.0.4] - 2026-10-17
 
 ### Adicionado
 - Seletor de idioma nas configurações do widget, com English, Português

@@ -1,5 +1,7 @@
 # Num Lock Auto Locker & Toggle (KDE Plasma 6)
 
+**Versão atual: 1.0.4** · [Histórico de alterações](CHANGELOG.md)
+
 Extensão e Applet para o **KDE Plasma 6** (Wayland e X11) que força automaticamente o **Num Lock** a ficar ativo na **tela de bloqueio (*kscreenlocker*)** e na **tela de login (*SDDM*)**, além de fornecer um indicador visual moderno para o painel / bandeja do sistema.
 
 ---
@@ -33,6 +35,7 @@ numlock_toggle/
 │       └── ui/                  # Componentes de interface QML
 │           ├── CompactRepresentation.qml
 │           ├── FullRepresentation.qml
+│           ├── Translations.js   # Textos nos quatro idiomas
 │           ├── configGeneral.qml
 │           └── main.qml
 ├── scripts/
@@ -40,7 +43,8 @@ numlock_toggle/
 │   ├── uninstall.sh             # Script de desinstalação
 │   ├── sync_sddm.sh             # Script de configuração do SDDM (root)
 │   ├── numlock_helper.py        # Utilitário CLI e daemon DBus
-│   └── numlock-autolock.service # Serviço de usuário do systemd
+│   ├── numlock-autolock.service # Serviço de usuário do systemd
+│   └── package_release.sh      # Geração dos pacotes de distribuição
 └── README.md
 ```
 
@@ -58,6 +62,23 @@ O instalador irá:
 1. Instalar o applet no KDE Plasma 6 (`kpackagetool6`).
 2. Configurar e iniciar o serviço de usuário (`systemctl --user enable --now numlock-autolock.service`).
 3. Opcionalmente configurar o SDDM (`sync_sddm.sh`).
+
+---
+
+## 🌐 Escolhendo o idioma
+
+A versão 1.0.4 usa **English** como padrão. Para mudar:
+
+1. Abra as configurações do widget pelo botão de engrenagem.
+2. Na página **General**, escolha uma opção em **Language**: English,
+   Português (Portugal), Português (Brasil) ou Español.
+3. Clique em **Aplicar** para salvar a preferência.
+
+A escolha é salva por instância do widget e aplicada ao painel, às dicas, à
+página de configurações e às notificações de ativação iniciadas pelo widget.
+O serviço em segundo plano é independente: para escolher o idioma das suas
+notificações ao executá-lo manualmente, use `--notify --language`.
+Os scripts de instalação e sincronização do SDDM continuam em português.
 
 ---
 
@@ -84,12 +105,46 @@ O script `numlock_helper.py` pode ser executado diretamente no terminal:
 # Forçar Num Lock LIGADO
 ./scripts/numlock_helper.py --enable
 
+# Forçar ativação com notificação em português do Brasil
+./scripts/numlock_helper.py --enable --notify --language pt_BR
+
 # Alternar Num Lock
 ./scripts/numlock_helper.py --toggle
 
 # Executar como daemon DBus em background
 ./scripts/numlock_helper.py --daemon
+
+# Executar o daemon com notificações em espanhol
+./scripts/numlock_helper.py --daemon --notify --language es
 ```
+
+A opção `--language` aceita `en` (padrão), `pt_PT`, `pt_BR` e `es` e define
+somente o idioma das notificações.
+
+---
+
+## 📦 Pacotes da versão 1.0.4
+
+Para gerar os pacotes de distribuição a partir do código-fonte:
+
+```bash
+bash scripts/package_release.sh
+```
+
+O comando recria a pasta `build/` e gera:
+
+- `build/org.kde.plasma.numlocktoggle-v1.0.4.plasmoid`
+- `build/org.kde.plasma.numlocktoggle-v1.0.4.tar.gz`
+
+Para instalar somente o widget a partir do pacote:
+
+```bash
+kpackagetool6 -t Plasma/Applet --install build/org.kde.plasma.numlocktoggle-v1.0.4.plasmoid
+```
+
+Se o widget já estiver instalado, use `--upgrade` no lugar de `--install`.
+Para instalar também o serviço de monitoramento, siga a instalação completa
+com `bash scripts/install.sh` descrita acima.
 
 ---
 
