@@ -15,6 +15,7 @@ Extensão e Applet para o **KDE Plasma 6** (Wayland e X11) que força automatica
   - Botões para alternar ou forçar estado do Num Lock.
   - Cartão de status das travas de teclado.
   - Acesso direto às preferências e ao assistente de sincronização.
+- 🌐 **Idioma da interface**: English (padrão), Português (Portugal), Português (Brasil) e Español. Escolha em **Configurações → General → Language** e clique em **Aplicar**.
 - ⚙️ **Serviço de Fundo (systemd --user)**: Mantém o monitoramento mesmo se o widget não for adicionado à barra de tarefas.
 
 ---

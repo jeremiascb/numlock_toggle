@@ -13,6 +13,30 @@ SPEC.loader.exec_module(helper)
 
 class EnableNumLockTests(unittest.TestCase):
     @mock.patch.object(helper, "sync_kcminputrc_numlock")
+    @mock.patch.object(helper, "inject_numlock_key", return_value=True)
+    @mock.patch.object(helper, "get_led_state", return_value=False)
+    @mock.patch.object(helper.subprocess, "run")
+    def test_notification_uses_selected_language(self, run, get_state, inject, sync):
+        titles = {
+            "en": "Num Lock enabled",
+            "pt_PT": "Num Lock ativado",
+            "pt_BR": "Num Lock ativado",
+            "es": "Num Lock activado",
+        }
+        for language, title in titles.items():
+            with self.subTest(language=language):
+                helper.enable_numlock(notify=True, language=language)
+                self.assertEqual(run.call_args.args[0][5], title)
+
+    @mock.patch.object(helper, "sync_kcminputrc_numlock")
+    @mock.patch.object(helper, "inject_numlock_key", return_value=True)
+    @mock.patch.object(helper, "get_led_state", return_value=False)
+    @mock.patch.object(helper.subprocess, "run")
+    def test_notification_defaults_to_english(self, run, get_state, inject, sync):
+        helper.enable_numlock(notify=True)
+        self.assertEqual(run.call_args.args[0][5], "Num Lock enabled")
+
+    @mock.patch.object(helper, "sync_kcminputrc_numlock")
     @mock.patch.object(helper, "inject_numlock_key")
     @mock.patch.object(helper, "get_led_state", return_value=True)
     def test_enable_does_not_toggle_when_already_active(self, get_state, inject, sync):

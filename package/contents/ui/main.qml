@@ -1,6 +1,7 @@
 pragma ComponentBehavior: Bound
 
 import QtQuick
+import "Translations.js" as Translations
 import QtQuick.Layouts
 import QtQuick.Controls as QQC2
 import org.kde.kirigami as Kirigami
@@ -65,7 +66,7 @@ PlasmoidItem {
     // Force NumLock ON
     function forceNumLockOn() {
         let notifyFlag = Plasmoid.configuration.showNotification ? " --notify" : ""
-        executableSource.runCommand("python3 " + root.helperPath + " --enable" + notifyFlag)
+        executableSource.runCommand("python3 " + root.helperPath + " --enable --language " + Translations.normalizeLanguage(Plasmoid.configuration.language) + notifyFlag)
     }
 
     // Force NumLock OFF
@@ -75,7 +76,7 @@ PlasmoidItem {
 
     // Trigger SDDM Sync in terminal / GUI
     function runSddmSync() {
-        executableSource.runCommand("konsole -e bash -c 'pkexec " + root.sddmScriptPath + " ; echo \"Pressione Enter para fechar...\"; read'")
+        executableSource.runCommand("konsole -e bash -c 'pkexec " + root.sddmScriptPath + " ; echo \"" + Translations.tr(Plasmoid.configuration.language, "Pressione Enter para fechar...") + "\"; read'")
     }
 
     // Startup check

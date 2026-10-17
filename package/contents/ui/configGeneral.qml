@@ -1,4 +1,5 @@
 import QtQuick
+import "Translations.js" as Translations
 import QtQuick.Controls as QQC2
 import QtQuick.Layouts
 import org.kde.kirigami as Kirigami
@@ -7,6 +8,8 @@ import org.kde.plasma.components as PlasmaComponents3
 
 KCM.SimpleKCM {
     id: configPage
+
+    property string cfg_language: "en"
 
     property alias cfg_forceNumLockOnLock: forceOnLockCheckBox.checked
     property alias cfg_forceNumLockOnStartup: forceOnStartupCheckBox.checked
@@ -17,59 +20,67 @@ KCM.SimpleKCM {
     Kirigami.FormLayout {
         anchors.fill: parent
 
+        QQC2.ComboBox {
+            id: languageComboBox
+            Kirigami.FormData.label: Translations.tr(configPage.cfg_language, "Idioma:")
+            model: Translations.languageNames
+            currentIndex: Translations.languageCodes.indexOf(Translations.normalizeLanguage(configPage.cfg_language))
+            onActivated: configPage.cfg_language = Translations.languageCodes[currentIndex]
+        }
+
         Item {
             Kirigami.FormData.isSection: true
-            Kirigami.FormData.label: i18n("Comportamento do Num Lock")
+            Kirigami.FormData.label: Translations.tr(configPage.cfg_language, "Comportamento do Num Lock")
         }
 
         PlasmaComponents3.CheckBox {
             id: forceOnLockCheckBox
-            Kirigami.FormData.label: i18n("Tela de Bloqueio:")
-            text: i18n("Ativar automaticamente o Num Lock quando a tela for bloqueada")
+            Kirigami.FormData.label: Translations.tr(configPage.cfg_language, "Tela de Bloqueio:")
+            text: Translations.tr(configPage.cfg_language, "Ativar automaticamente o Num Lock quando a tela for bloqueada")
         }
 
         PlasmaComponents3.CheckBox {
             id: forceOnStartupCheckBox
-            Kirigami.FormData.label: i18n("Inicialização:")
-            text: i18n("Garantir o Num Lock ativado ao iniciar a sessão do Plasma")
+            Kirigami.FormData.label: Translations.tr(configPage.cfg_language, "Inicialização:")
+            text: Translations.tr(configPage.cfg_language, "Garantir o Num Lock ativado ao iniciar a sessão do Plasma")
         }
 
         PlasmaComponents3.CheckBox {
             id: showNotifyCheckBox
-            Kirigami.FormData.label: i18n("Notificações:")
-            text: i18n("Exibir notificação popup ao forçar a ativação do Num Lock")
+            Kirigami.FormData.label: Translations.tr(configPage.cfg_language, "Notificações:")
+            text: Translations.tr(configPage.cfg_language, "Exibir notificação popup ao forçar a ativação do Num Lock")
         }
 
         Item {
             Kirigami.FormData.isSection: true
-            Kirigami.FormData.label: i18n("Aparência e Painel")
+            Kirigami.FormData.label: Translations.tr(configPage.cfg_language, "Aparência e Painel")
         }
 
         PlasmaComponents3.CheckBox {
             id: showCapsCheckBox
-            Kirigami.FormData.label: i18n("Outras teclas:")
-            text: i18n("Mostrar indicador de Caps Lock no painel quando ativo")
+            Kirigami.FormData.label: Translations.tr(configPage.cfg_language, "Outras teclas:")
+            text: Translations.tr(configPage.cfg_language, "Mostrar indicador de Caps Lock no painel quando ativo")
         }
 
         PlasmaComponents3.CheckBox {
             id: showScrollCheckBox
-            text: i18n("Mostrar indicador de Scroll Lock no painel quando ativo")
+            text: Translations.tr(configPage.cfg_language, "Mostrar indicador de Scroll Lock no painel quando ativo")
         }
 
         Item {
             Kirigami.FormData.isSection: true
-            Kirigami.FormData.label: i18n("Tela de Login Inicial (SDDM)")
+            Kirigami.FormData.label: Translations.tr(configPage.cfg_language, "Tela de Login Inicial (SDDM)")
         }
 
         PlasmaComponents3.Label {
-            text: i18n("Para que o teclado numérico funcione antes mesmo de fazer login na máquina, execute o script de sincronização do SDDM.")
+            text: Translations.tr(configPage.cfg_language, "Para que o teclado numérico funcione antes mesmo de fazer login na máquina, execute o script de sincronização do SDDM.")
             wrapMode: Text.WordWrap
             Layout.fillWidth: true
             color: Kirigami.Theme.disabledTextColor
         }
 
         PlasmaComponents3.Button {
-            text: i18n("Configurar SDDM Agora (requer sudo)")
+            text: Translations.tr(configPage.cfg_language, "Configurar SDDM Agora (requer sudo)")
             icon.name: "preferences-system-login"
             onClicked: {
                 if (plasmoid.rootItem) {

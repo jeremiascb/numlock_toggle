@@ -1,6 +1,7 @@
 pragma ComponentBehavior: Bound
 
 import QtQuick
+import "Translations.js" as Translations
 import QtQuick.Layouts
 import QtQuick.Controls as QQC2
 import org.kde.kirigami as Kirigami
@@ -64,11 +65,11 @@ Item {
     QQC2.ToolTip.visible: mouseArea.containsMouse
     QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
     QQC2.ToolTip.text: {
-        let txt = i18n("Num Lock: %1", compactRoot.numLockOn ? i18n("ATIVADO") : i18n("DESATIVADO"))
+        let txt = Translations.tr(Plasmoid.configuration.language, "Num Lock: %1", compactRoot.numLockOn ? Translations.tr(Plasmoid.configuration.language, "ATIVADO") : Translations.tr(Plasmoid.configuration.language, "DESATIVADO"))
         if (Plasmoid.configuration.showCapsLock) {
-            txt += "\n" + i18n("Caps Lock: %1", compactRoot.capsLockOn ? i18n("ATIVADO") : i18n("DESATIVADO"))
+            txt += "\n" + Translations.tr(Plasmoid.configuration.language, "Caps Lock: %1", compactRoot.capsLockOn ? Translations.tr(Plasmoid.configuration.language, "ATIVADO") : Translations.tr(Plasmoid.configuration.language, "DESATIVADO"))
         }
-        txt += "\n" + i18n("(Clique esquerdo: Menu | Clique do meio: Alternar)")
+        txt += "\n" + Translations.tr(Plasmoid.configuration.language, "(Clique esquerdo: Menu | Clique do meio: Alternar)")
         return txt
     }
 

@@ -215,7 +215,15 @@ def toggle_numlock():
         sync_kcminputrc_numlock(not current)
     print("[Helper] NumLock toggle triggered.")
 
-def enable_numlock(notify: bool = False):
+NOTIFICATION_MESSAGES = {
+    "en": ("Num Lock enabled", "Num Lock was enabled automatically."),
+    "pt_PT": ("Num Lock ativado", "O Num Lock foi ativado automaticamente."),
+    "pt_BR": ("Num Lock ativado", "O Num Lock foi ativado automaticamente."),
+    "es": ("Num Lock activado", "Num Lock se ha activado automáticamente."),
+}
+
+
+def enable_numlock(notify: bool = False, language: str = "en"):
     """Enforces NumLock to be ON."""
     # Read the hardware state before asking KWin to reconfigure. Reconfiguring
     # first can turn NumLock on asynchronously and a subsequent stale read may
@@ -230,13 +238,14 @@ def enable_numlock(notify: bool = False):
     sync_kcminputrc_numlock(True)
 
     if notify and not was_active:
+        title, body = NOTIFICATION_MESSAGES.get(language, NOTIFICATION_MESSAGES["en"])
         try:
             subprocess.run([
                 "notify-send",
                 "-a", "Num Lock Auto Locker",
                 "-i", "input-dialpad",
-                "Num Lock Ativado",
-                "Num Lock foi ativado automaticamente para a tela de bloqueio."
+                title,
+                body
             ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=2)
         except Exception:
             pass
@@ -255,7 +264,7 @@ def disable_numlock():
     sync_kcminputrc_numlock(False)
     print("[Helper] NumLock forced OFF.")
 
-def run_daemon(notify: bool = False):
+def run_daemon(notify: bool = False, language: str = "en"):
     """
     Runs a persistent DBus listener for org.freedesktop.ScreenSaver and org.kde.screensaver.
     Whenever the screen is locked, automatically forces NumLock ON.
@@ -275,11 +284,11 @@ def run_daemon(notify: bool = False):
     def on_active_changed(active: bool):
         print(f"[Helper Daemon] ScreenSaver.ActiveChanged: {active}")
         if active:
-            enable_numlock(notify=notify)
+            enable_numlock(notify=notify, language=language)
 
     def on_about_to_lock():
         print("[Helper Daemon] screensaver.AboutToLock received!")
-        enable_numlock(notify=notify)
+        enable_numlock(notify=notify, language=language)
 
     bus.add_signal_receiver(
         on_active_changed,
@@ -309,12 +318,15 @@ def main():
     parser.add_argument("--daemon", action="store_true", help="Run in background monitoring screen lock events")
     parser.add_argument("--notify", action="store_true", help="Send desktop notification on auto-activation")
 
+    parser.add_argument("--language", choices=tuple(NOTIFICATION_MESSAGES), default="en",
+                        help="Notification language (default: en)")
+
     args = parser.parse_args()
 
     if args.daemon:
-        run_daemon(notify=args.notify)
+        run_daemon(notify=args.notify, language=args.language)
     elif args.enable:
-        enable_numlock(notify=args.notify)
+        enable_numlock(notify=args.notify, language=args.language)
     elif args.disable:
         disable_numlock()
     elif args.toggle:

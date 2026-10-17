@@ -7,6 +7,24 @@ com versionamento seguindo [Semantic Versioning](https://semver.org/lang/pt-BR/)
 
 ---
 
+## [Não lançado]
+
+### Adicionado
+- Seletor de idioma nas configurações do widget, com English, Português
+  (Portugal), Português (Brasil) e Español.
+- Preferência de idioma salva na configuração do applet e aplicada aos textos
+  do painel, às dicas e à página de configurações.
+- Opção `--language` no helper para selecionar o idioma das notificações,
+  também utilizada nas ativações iniciadas pelo widget.
+- Traduções dos metadados para português de Portugal e espanhol.
+- Testes das notificações nos quatro idiomas e do idioma padrão.
+
+### Alterado
+- English passa a ser o idioma padrão da interface e das notificações.
+- README atualizado com os idiomas disponíveis e as instruções de seleção.
+
+---
+
 ## [1.0.3] - 2026-08-29
 
 ### Corrigido
